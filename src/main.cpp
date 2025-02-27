@@ -31,91 +31,87 @@
 #include <filesystem>
 #include <nlohmann/json.hpp>
 
+// Constants provided by the administrator for the wallet
+// WALLET_NAME: Identifier for this wallet instance
+// EXTENDED_PRIVATE_KEY: BIP32 master key in Base58Check encoding (tprv prefix for testnet)
+// WALLET_STATE_FILE: Local file to persist wallet data between runs
+constexpr const char* WALLET_NAME = "wallet_314";
+constexpr const char* EXTENDED_PRIVATE_KEY = "tprv8ZgxMBicQKsPf8BJPyF6ryFmhgviot5aXsbfVh8o3Fa88iz3d7xZqnSKCeWJ25hAkq4S6Tu1RgRwBNdRqPTjgHX64WEqgbiB8xk1XjEmMX5";
+constexpr const char* WALLET_STATE_FILE = "wallet_state.json";
+
 int main() {
     try {
-        // Wallet state file stores UTXOs, keys, and other wallet data in JSON format
-        const std::string wallet_file = "wallet_state.json";
-        
-        // Debug output to help with path-related issues
-        //std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
-        
-        // Check if wallet state exists, if not, perform recovery
-        if (!std::filesystem::exists(wallet_file)) {
-            std::cout << "Wallet state file not found. Running recovery..." << std::endl;
-            try {
-                // Recover wallet state from extended private key
-                // This process:
-                // 1. Derives child keys according to BIP32
-                // 2. Generates corresponding public keys
-                // 3. Creates SegWit addresses
-                // 4. Scans blockchain for UTXOs
-                auto wallet_state = wallet::recover_wallet_state(wallet::EXTENDED_PRIVATE_KEY);
-                wallet_state.save_to_file(wallet_file);
-                std::cout << "Wallet state recovered and saved." << std::endl;
-            } catch (const wallet::BalanceError& e) {
-                // Special handling for missing bitcoin-cli
-                if (e.type() == wallet::BalanceError::ErrorType::MissingCodeCantRun) {
-                    std::cerr << "Warning: " << e.what() << std::endl;
-                    std::cerr << "Creating empty wallet state." << std::endl;
-                    wallet::WalletState empty_state;
-                    empty_state.save_to_file(wallet_file);
-                } else {
-                    throw; // Re-throw other errors
-                }
-            }
-        }
+        // Create wallet instance with the loaded state
+        // The wallet constructor initializes the wallet with the provided name and extended private key
+        // This establishes the cryptographic identity of the wallet
+        wallet::Wallet wallet(WALLET_NAME, EXTENDED_PRIVATE_KEY);
 
-        // Load wallet state and calculate balance
-        wallet::WalletState wallet_state = wallet::WalletState::load_from_file(wallet_file);
-        
+        // Load existing wallet state from file
+        // This restores previously discovered UTXOs and address data
+        // If the file doesn't exist, the wallet will perform a blockchain scan
+        wallet.load(WALLET_STATE_FILE);
+
         // Get balance in satoshis (1 BTC = 100,000,000 satoshis)
-        auto balance = wallet_state.balance();
+        // Satoshis are the smallest unit in Bitcoin, similar to cents in dollars
+        auto balance = wallet.balance();
         
         // Convert satoshis to BTC with proper decimal formatting
         // Use fixed-point notation with 8 decimal places (Bitcoin standard)
+        // This ensures consistent display of Bitcoin amounts
         double balance_btc = static_cast<double>(balance) / 100'000'000.0;
 
         // Output format: "<wallet_name> <balance>"
         // Example: "wallet_314 0.05000000"
-        std::cout << wallet::WALLET_NAME << " " 
+        // This format is designed for easy parsing by other tools
+        std::cout << wallet.get_wallet_name() << " " 
                   << std::fixed << std::setprecision(8) << balance_btc 
                   << std::endl;
 
-        // Create wallet instance with the loaded state
-        wallet::Wallet wallet(wallet_state);
-
         // Spend P2WPKH transaction
-        auto result1 = wallet.spend_p2wpkh();
-        auto txid1 = result1.first;
-        auto tx1 = result1.second;
-        if (tx1.empty()) {
+        // This creates a Pay-to-Witness-Public-Key-Hash transaction
+        // P2WPKH is the standard SegWit transaction type for single-signature wallets
+        // It returns both the transaction ID and the raw transaction data
+        auto p2wpkh_result = wallet.spend_p2wpkh();
+        auto p2wpkh_txid = p2wpkh_result.first;
+        auto p2wpkh_tx = p2wpkh_result.second;
+        if (p2wpkh_tx.empty()) {
             std::cerr << "Failed to create P2WPKH transaction" << std::endl;
             return 1;
         }
 
-        std::cout << "***********************************Transactions*************************************************" << std::endl;
-        std::cout << "TX1:" << std::endl;
-        std::cout << wallet::HexUtils::encode(tx1) << std::endl;
+        // Display the raw transaction in hexadecimal format
+        std::cout << std::endl;
+        std::cout << "p2wpkh tx:" << std::endl;
+        std::cout << wallet::HexUtils::encode(p2wpkh_tx) << std::endl;
 
         // Spend P2WSH transaction using the txid from the first transaction
-        auto tx2 = wallet.spend_p2wsh(txid1);
-        if (tx2.empty()) {
+        // Pay-to-Witness-Script-Hash (P2WSH) is used for more complex script conditions
+        // In this case, it demonstrates spending from a multi-signature or time-locked script
+        auto p2wsh_tx = wallet.spend_p2wsh(p2wpkh_txid);
+        if (p2wsh_tx.empty()) {
             std::cerr << "Failed to create P2WSH transaction" << std::endl;
             return 1;
         }
 
-        std::cout << "TX2:" << std::endl;
-        std::cout << wallet::HexUtils::encode(tx2) << std::endl;        
+        std::cout << std::endl;
+        std::cout << "p2wsh tx:" << std::endl;
+        std::cout << wallet::HexUtils::encode(p2wsh_tx) << std::endl;        
 
         // Format transactions for mempool acceptance check
+        // The testmempoolaccept RPC call validates transactions without broadcasting them
+        // This is useful to check if transactions would be accepted by the network
         std::string mempool_check_command = "testmempoolaccept '[\"" + 
-            wallet::HexUtils::encode(tx1) + "\", \"" + 
-            wallet::HexUtils::encode(tx2) + "\"]'";
+            wallet::HexUtils::encode(p2wpkh_tx) + "\", \"" + 
+            wallet::HexUtils::encode(p2wsh_tx) + "\"]'";
         
+        // Execute the mempool acceptance check
+        // This communicates with the Bitcoin Core node to validate the transactions
         std::cout << "\nChecking mempool acceptance..." << std::endl;
         auto result = wallet::BitcoinCLI::execute(mempool_check_command);
         
         // Parse and format the JSON result
+        // The result contains detailed information about transaction validity
+        // Including potential reasons for rejection if the transaction is invalid
         try {
             nlohmann::json mempool_result = nlohmann::json::parse(result);
             std::cout << "Mempool acceptance result:" << std::endl;

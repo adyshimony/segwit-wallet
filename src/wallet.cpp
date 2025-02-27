@@ -11,6 +11,8 @@
 #include <openssl/obj_mac.h>
 #include <algorithm>
 #include <ranges>
+#include <iostream>
+#include <fstream>
 
 namespace wallet {
 
@@ -731,5 +733,59 @@ std::vector<uint8_t> Wallet::spend_p2wsh(const std::array<uint8_t, 32>& txid) {
         {opreturn_output, change_output},
         {witness}
     );
+}
+
+uint64_t Wallet::balance() const {
+    // Simply delegate to the wallet state's balance method
+    uint64_t total_balance = wallet_state.balance();
+    
+    std::cout << "Wallet balance: " << total_balance << " satoshis" << std::endl;
+    return total_balance;
+}
+
+bool Wallet::load(const std::string& wallet_file) {
+    std::cout << "Loading wallet state from file: " << wallet_file << std::endl;
+    
+    // Check if wallet state exists, if not, perform recovery
+    if (!std::filesystem::exists(wallet_file)) {
+        std::cout << "Wallet state file not found. Running recovery..." << std::endl;
+        try {
+            // Recover wallet state from extended private key
+            // This process:
+            // 1. Derives child keys according to BIP32
+            // 2. Generates corresponding public keys
+            // 3. Creates SegWit addresses
+            // 4. Scans blockchain for UTXOs
+            auto ok = wallet_state.recover_wallet_state();
+            wallet_state.save_to_file(wallet_file);
+            std::cout << "Wallet state recovered and saved to " << wallet_file << "." << std::endl;
+        } catch (const wallet::BalanceError& e) {
+            // Special handling for missing bitcoin-cli
+            if (e.type() == wallet::BalanceError::ErrorType::MissingCodeCantRun) {
+                std::cerr << "Warning: " << e.what() << std::endl;
+                return false;
+            } else {
+                throw; // Re-throw other errors
+            }
+        }
+    }
+
+    // Check if file exists
+    std::ifstream file(wallet_file);
+    if (!file.good()) {
+        std::cerr << "Error: Wallet file does not exist or cannot be opened" << std::endl;
+        return false;
+    }
+    
+    // Attempt to load wallet state from file
+    bool result = wallet_state.load_from_file(wallet_file);
+    
+    if (result) {
+        std::cout << "Successfully loaded wallet: " << get_wallet_name() << std::endl;
+    } else {
+        std::cerr << "Failed to load wallet from file" << std::endl;
+    }
+    
+    return result;
 }
 } // namespace wallet

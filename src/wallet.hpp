@@ -27,8 +27,9 @@ struct Utxo;
 
 class Wallet {
 public:
-    // Constructor that takes a WalletState
-    Wallet(const WalletState& state) : wallet_state(state) {}
+    // Add constructor that takes wallet name and extended private key
+    Wallet(const std::string& wallet_name, const std::string& extended_private_key)
+        : wallet_state(wallet_name, extended_private_key) {}
     
     // Creates a transaction spending from P2WPKH to P2WSH multisig with change
     // Returns the transaction ID and complete transaction
@@ -40,6 +41,15 @@ public:
     
     // Get the wallet state
     const WalletState& get_wallet_state() const { return wallet_state; }
+    
+    // Get wallet name
+    const std::string& get_wallet_name() const { return wallet_state.get_wallet_name(); }
+
+    // Load wallet from file
+    bool load(const std::string& wallet_file);
+    
+    // Get wallet balance
+    uint64_t balance() const;
     
 private:
     // The wallet state as a member variable

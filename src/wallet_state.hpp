@@ -72,14 +72,14 @@
 
 namespace wallet {
 
-// Constants provided by the administrator for the wallet
-constexpr const char* WALLET_NAME = "wallet_314";
-constexpr const char* EXTENDED_PRIVATE_KEY = "tprv8ZgxMBicQKsPf8BJPyF6ryFmhgviot5aXsbfVh8o3Fa88iz3d7xZqnSKCeWJ25hAkq4S6Tu1RgRwBNdRqPTjgHX64WEqgbiB8xk1XjEmMX5";
-
-
-
 class WalletState {
 public:
+    // Add constructor that takes wallet name and extended private key
+    WalletState(const std::string& wallet_name, const std::string& extended_private_key);
+
+    // Get wallet name
+    const std::string& get_wallet_name() const { return wallet_name; }
+
     // Choose a UTXO with sufficient value
     std::optional<Utxo> choose_utxo(uint64_t min_satoshis) const;
 
@@ -103,12 +103,14 @@ public:
 
     // Persistence methods
     void save_to_file(const std::string& path) const;
-    static WalletState load_from_file(const std::string& path);
+    bool load_from_file(const std::string& path);
 
     // Friend declaration for recovery function
-    friend WalletState recover_wallet_state(const std::string& extended_private_key);
+    bool recover_wallet_state();
 
 private:
+    std::string wallet_name;  // Add member variable to store wallet name
+    std::string extended_private_key;  // Add member variable to store extended private key
     std::unordered_map<std::string, Utxo> utxo_map;
     std::vector<std::vector<uint8_t>> witness_programs;
     std::vector<std::vector<uint8_t>> public_keys;
@@ -119,9 +121,6 @@ private:
     friend void from_json(const nlohmann::json& j, WalletState& w);
 };
 
-
-
-// Main recovery function
-WalletState recover_wallet_state(const std::string& extended_private_key);
+// Update the recovery function signature
 
 } // namespace wallet 
