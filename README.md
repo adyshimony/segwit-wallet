@@ -77,6 +77,53 @@ The wallet calculates its state (derived keys and UTXOs) only once and saves it 
    ./wallet
    ```
 
+
+### Expected Output
+```
+
+Initialized wallet state for wallet: wallet_314
+Loading wallet state from file: wallet_state.json
+Successfully loaded wallet: wallet_314
+Wallet balance: 1782659711 satoshis
+wallet_314 17.82659711
+
+p2wpkh tx:
+020000000001012f964f42397021f91b20ab513280d2414b7865f1513754bf2780cd39786fcaca8d00000000ffffffff0240420f000000000022002063d1de244bb90c4d46e80da4075fd7dea7b0dfc8173ff725ffd4200f12d65db5bba27b00000000001600142fbbb8a20460e83da09b1a02dc62b0080fcc88a402483045022100f6a7d5dae85e68442756b147e47b16f11601d33fe5a539229b608efd58b39b4c02207b9f7e4462809379a323c54f12d449dfc6b2a30c5280bf56e37c795c1a8569d0012103062b4ace754d8fc40125f6407dc6b5c55ac079e0ec6e6c88022457c9f562340900000000
+
+p2wsh tx:
+02000000000101a9a90b601c6146d3a1759e693df6bd2db3e77e15fef303561c44484fdd63cfd10000000000ffffffff020000000000000000186a1641647973202d2049206b6e6f77206b756e6720667521583e0f00000000001600142fbbb8a20460e83da09b1a02dc62b0080fcc88a404004730440220039f431e412ab8da02a8f2d6bdcdc479c1b07a19fe8db2bdfacbd67434a2265302200c6b03de0db1036bd30a49a67fc187db3bff7a759c225ed0781a41d7dd84778701483045022100e55bf5e300434fbc6456af46ba6339937699334e2528c310465f38bb5bc97c2b02206735b9b8e003b02369b7e8be1141a7559aca416226fb504c87cd405c0c8253a10147522102a693f085c8f3cbf9e109a8d9dda9cd6805e2e8c1b82d9abf64f785a337dbe3ff210227b6997a65ef7a576f565bf29e889a71000d5a20260a179ddd2d173d7fd165ce52ae00000000
+
+Checking mempool acceptance...
+Mempool acceptance result:
+[
+    {
+        "allowed": true,
+        "fees": {
+            "base": 1e-05,
+            "effective-feerate": 6.535e-05,
+            "effective-includes": [
+                "33b3a44481b018a6c5e71eb51e03f85563abdb3ff80950d48c712c7487245f06"
+            ]
+        },
+        "txid": "d1cf63dd4f48441c5603f3fe157ee7b32dbdf63d699e75a1d346611c600ba9a9",
+        "vsize": 153,
+        "wtxid": "33b3a44481b018a6c5e71eb51e03f85563abdb3ff80950d48c712c7487245f06"
+    },
+    {
+        "allowed": true,
+        "fees": {
+            "base": 1e-05,
+            "effective-feerate": 5.847e-05,
+            "effective-includes": [
+                "0c7698816e09b8f9bef41e17ce6f4da29583701a039f941d1eb28f776ec5a5a9"
+            ]
+        },
+        "txid": "06f949da3dd721de560936ba431c1531ee1403e0955b840724f675a8085e373c",
+        "vsize": 171,
+        "wtxid": "0c7698816e09b8f9bef41e17ce6f4da29583701a039f941d1eb28f776ec5a5a9"
+    }
+]
+```
 ### Dependencies
 
 - **OpenSSL**: For cryptographic operations (SHA256, RIPEMD160, ECDSA)

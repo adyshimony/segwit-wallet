@@ -1,4 +1,3 @@
-
 #include "wallet.h"
 #include "wallet_state.h"
 #include "utxo.h"
@@ -60,17 +59,17 @@ std::vector<uint8_t> Wallet::create_output(const std::vector<uint8_t>& script, u
 // - Allows selective commitment to parts of the transaction (via SIGHASH flags)
 // - Provides replay protection across different inputs in the same transaction
 //
-// The commitment structure includes:
-// 1. Transaction version (4 bytes)
+// The commitment structure includes (all integers are little-endian):
+// 1. Transaction version (4 bytes, little-endian)
 // 2. Hash of all input outpoints (32 bytes) - double SHA256
 // 3. Hash of all input sequence numbers (32 bytes) - double SHA256
-// 4. Outpoint being spent (36 bytes)
+// 4. Outpoint being spent (36 bytes) - txid (32 bytes, little-endian) + vout index (4 bytes, little-endian)
 // 5. Script code of the input (variable)
-// 6. Value of the output being spent (8 bytes)
-// 7. Sequence number of the input (4 bytes)
+// 6. Value of the output being spent (8 bytes, little-endian)
+// 7. Sequence number of the input (4 bytes, little-endian)
 // 8. Hash of all outputs (32 bytes) - double SHA256
-// 9. Locktime (4 bytes)
-// 10. Sighash type (4 bytes)
+// 9. Locktime (4 bytes, little-endian)
+// 10. Sighash type (4 bytes, little-endian)
 std::vector<uint8_t> Wallet::get_commitment_hash(
     const Outpoint& outpoint,
     const std::vector<uint8_t>& scriptcode,

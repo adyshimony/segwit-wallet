@@ -1,40 +1,4 @@
-/**
- * @file wallet.cpp
- * @brief Implementation of Bitcoin wallet functionality
- * 
- * This file implements the core wallet operations including:
- * 1. Key Management:
- *    - Base58 encoding/decoding for Bitcoin keys
- *    - BIP32 hierarchical key derivation
- *    - Public key generation from private keys
- * 
- * 2. UTXO Management:
- *    - UTXO tracking and selection
- *    - Balance calculation
- *    - Blockchain scanning for wallet UTXOs
- * 
- * 3. Bitcoin Protocol Features:
- *    - SegWit address generation (P2WPKH)
- *    - Bitcoin Core RPC communication
- *    - Transaction output parsing
- * 
- * Key C++ Implementation Features:
- * 
- * 1. Cryptographic Operations:
- *    - OpenSSL library integration
- *    - Secure key operations
- *    - Hash functions (SHA256, RIPEMD160)
- * 
- * 2. Memory Management:
- *    - RAII with smart pointers
- *    - Exception-safe resource handling
- *    - Secure memory practices for keys
- * 
- * 3. Modern C++ Features:
- *    - std::span for safe array views
- *    - std::optional for nullable returns
- *    - JSON serialization for persistence
- */
+
 
 #include "wallet_state.h"
 #include "error.h"
