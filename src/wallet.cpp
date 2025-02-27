@@ -280,10 +280,7 @@ std::vector<uint8_t> Wallet::sign(const std::array<uint8_t, 32>& privkey, const 
     BN_free(order);
     BN_free(half_order);
     
-    // Append SIGHASH_ALL
-    // This indicates that the signature commits to all inputs and outputs of the transaction
-    signature.push_back(SIGHASH_ALL);
-    
+   
     return signature;
 }
     
