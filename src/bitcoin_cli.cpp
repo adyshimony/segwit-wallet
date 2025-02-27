@@ -9,13 +9,9 @@ namespace wallet {
 using json = nlohmann::json;
 
 // Execute a bitcoin-cli command and return the result as a byte vector.
-// 
-// Args:
-//   cmd: The bitcoin-cli command to execute (without the 'bitcoin-cli' prefix)
-// Returns:
-//   The command output as a vector of bytes
-// Throws:
-//   wallet::BalanceError if the command fails or returns invalid data
+// Gets bitcoin-cli command to execute (without the 'bitcoin-cli' prefix)
+// Returnshe command output as a vector of bytes
+// Throws wallet::BalanceError if the command fails or returns invalid data
 std::vector<uint8_t> BitcoinCLI::execute(const std::string& cmd) {
     std::string full_cmd = "bitcoin-cli -signet " + cmd + " 2>&1";  // Capture stderr too
     

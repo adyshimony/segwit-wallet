@@ -39,9 +39,6 @@ public:
     // Returns the complete transaction
     std::vector<uint8_t> spend_p2wsh(const std::array<uint8_t, 32>& txid);
     
-    // Get the wallet state
-    const WalletState& get_wallet_state() const { return wallet_state; }
-    
     // Get wallet name
     const std::string& get_wallet_name() const { return wallet_state.get_wallet_name(); }
 

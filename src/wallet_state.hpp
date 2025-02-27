@@ -59,6 +59,7 @@
 #include "error.hpp"
 #include "bip32_util.hpp"
 #include "utxo.hpp"
+#include "secure_memory.hpp"
 
 // For C++20 span support
 #if __has_include(<span>)
@@ -109,12 +110,15 @@ public:
     bool recover_wallet_state();
 
 private:
-    std::string wallet_name;  // Add member variable to store wallet name
-    std::string extended_private_key;  // Add member variable to store extended private key
-    std::unordered_map<std::string, Utxo> utxo_map;
-    std::vector<std::vector<uint8_t>> witness_programs;
-    std::vector<std::vector<uint8_t>> public_keys;
-    std::vector<std::vector<uint8_t>> private_keys;
+    std::string wallet_name;  // Human-readable identifier for the wallet
+    
+    // Secure container for the BIP32 master key with memory protection
+    std::unique_ptr<SecureMemory> extended_private_key;  
+    
+    std::unordered_map<std::string, Utxo> utxo_map; // Maps transaction IDs to unspent transaction outputs
+    std::vector<std::vector<uint8_t>> witness_programs; // SegWit output scripts for receiving payments
+    std::vector<std::vector<uint8_t>> public_keys; // Derived public keys used for address generation
+    std::vector<std::vector<uint8_t>> private_keys; // Derived private keys for signing transactions
 
     // Friend declaration for JSON serialization
     friend void to_json(nlohmann::json& j, const WalletState& w);
