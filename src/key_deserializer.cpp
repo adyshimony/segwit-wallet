@@ -1,5 +1,5 @@
-#include "key_deserializer.hpp"
-#include "error.hpp"
+#include "key_deserializer.h"
+#include "error.h"
 #include <algorithm>
 
 namespace wallet {

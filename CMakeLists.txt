@@ -14,18 +14,24 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # First, create the library
 add_library(wallet_lib
-    src/error.hpp
-    src/base58.hpp
+    src/error.h
+    src/base58.h
     src/base58.cpp
+    src/wallet_state.h
     src/wallet_state.cpp
+    src/key_deserializer.h
     src/key_deserializer.cpp
+    src/bip32_util.h
     src/bip32_util.cpp
+    src/bitcoin_cli.h
     src/bitcoin_cli.cpp
-    src/segwit.hpp
+    src/segwit.h
     src/segwit.cpp
-    src/wallet.hpp
-    src/wallet.cpp
+    src/hash_utils.h
     src/hash_utils.cpp
+    src/wallet.h
+    src/wallet.cpp
+    src/secure_memory.h
 )
 
 # Set include directories for the library

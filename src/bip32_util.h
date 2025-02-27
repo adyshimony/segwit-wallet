@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <array>
 #include <string>
-#include "error.hpp"
+#include "error.h"
 
 namespace wallet {
 

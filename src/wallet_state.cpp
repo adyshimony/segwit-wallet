@@ -36,15 +36,15 @@
  *    - JSON serialization for persistence
  */
 
-#include "wallet_state.hpp"
-#include "error.hpp"
-#include "base58.hpp"
-#include "key_deserializer.hpp"
-#include "bip32_util.hpp"
-#include "bitcoin_cli.hpp"
-#include "hex_utils.hpp"
-#include "segwit.hpp"
-#include "consts.hpp"
+#include "wallet_state.h"
+#include "error.h"
+#include "base58.h"
+#include "key_deserializer.h"
+#include "bip32_util.h"
+#include "bitcoin_cli.h"
+#include "hex_utils.h"
+#include "segwit.h"
+#include "consts.h"
 #include <openssl/sha.h>
 #include <openssl/ripemd.h>
 #include <openssl/hmac.h>

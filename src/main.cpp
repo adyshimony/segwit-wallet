@@ -21,11 +21,11 @@
  * - std::fixed/setprecision: For proper Bitcoin amount formatting
  */
 
-#include "bitcoin_cli.hpp"
-#include "segwit.hpp"
-#include "wallet_state.hpp"
-#include "wallet.hpp"
-#include "hex_utils.hpp"
+#include "bitcoin_cli.h"
+#include "segwit.h"
+#include "wallet_state.h"
+#include "wallet.h"
+#include "hex_utils.h"
 #include <iostream>
 #include <iomanip>
 #include <filesystem>

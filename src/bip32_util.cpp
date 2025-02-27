@@ -1,4 +1,4 @@
-#include "bip32_util.hpp"
+#include "bip32_util.h"
 #include <openssl/ec.h>
 #include <openssl/obj_mac.h>
 #include <openssl/hmac.h>

@@ -1,4 +1,4 @@
-#include "bitcoin_cli.hpp"
+#include "bitcoin_cli.h"
 #include <array>
 #include <memory>
 #include <cstdio>

@@ -1,10 +1,10 @@
-#include "segwit.hpp"
-#include "utxo.hpp"
-#include "consts.hpp"
+#include "segwit.h"
+#include "utxo.h"
+#include "consts.h"
 #include <openssl/sha.h>
 #include <openssl/ripemd.h>
 #include <array>
-#include "hash_utils.hpp"
+#include "hash_utils.h"
 
 namespace wallet {
 

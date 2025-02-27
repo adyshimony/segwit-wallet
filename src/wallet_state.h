@@ -56,10 +56,10 @@
 #include <stdexcept>
 #include <numeric>
 #include <nlohmann/json.hpp>
-#include "error.hpp"
-#include "bip32_util.hpp"
-#include "utxo.hpp"
-#include "secure_memory.hpp"
+#include "error.h"
+#include "bip32_util.h"
+#include "utxo.h"
+#include "secure_memory.h"
 
 // For C++20 span support
 #if __has_include(<span>)

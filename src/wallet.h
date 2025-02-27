@@ -11,7 +11,7 @@
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
 #include <optional>
-#include "wallet_state.hpp"  // Include the WalletState header
+#include "wallet_state.h"  // Include the WalletState header
 
 namespace wallet {
 

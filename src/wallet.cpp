@@ -1,9 +1,10 @@
-#include "wallet.hpp"
-#include "wallet_state.hpp"
-#include "utxo.hpp"
-#include "consts.hpp"
-#include "segwit.hpp"
-#include "hash_utils.hpp"
+
+#include "wallet.h"
+#include "wallet_state.h"
+#include "utxo.h"
+#include "consts.h"
+#include "segwit.h"
+#include "hash_utils.h"
 #include <openssl/sha.h>
 #include <openssl/ripemd.h>
 #include <openssl/ec.h>

@@ -1,4 +1,4 @@
-#include "hash_utils.hpp"
+#include "hash_utils.h"
 
 namespace wallet {
 

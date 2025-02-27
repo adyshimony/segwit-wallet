@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 #include <cstdint>
-#include "error.hpp"
-#include "wallet_state.hpp"
+#include "error.h"
+#include "wallet_state.h"
 
 namespace wallet {
 

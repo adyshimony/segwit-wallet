@@ -1,5 +1,5 @@
-#include "base58.hpp"
-#include "error.hpp"
+#include "base58.h"
+#include "error.h"
 #include <array>
 
 namespace wallet {
