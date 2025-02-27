@@ -66,7 +66,7 @@ int main() {
         }
 
         // Load wallet state and calculate balance
-        const wallet::WalletState& wallet_state = wallet::WalletState::load_from_file(wallet_file);
+        wallet::WalletState wallet_state = wallet::WalletState::load_from_file(wallet_file);
         
         // Get balance in satoshis (1 BTC = 100,000,000 satoshis)
         auto balance = wallet_state.balance();
@@ -81,8 +81,11 @@ int main() {
                   << std::fixed << std::setprecision(8) << balance_btc 
                   << std::endl;
 
+        // Create wallet instance with the loaded state
+        wallet::Wallet wallet(wallet_state);
+
         // Spend P2WPKH transaction
-        auto result1 = wallet::Wallet::spend_p2wpkh(wallet_state);
+        auto result1 = wallet.spend_p2wpkh();
         auto txid1 = result1.first;
         auto tx1 = result1.second;
         if (tx1.empty()) {
@@ -95,12 +98,11 @@ int main() {
         std::cout << wallet::HexUtils::encode(tx1) << std::endl;
 
         // Spend P2WSH transaction using the txid from the first transaction
-        auto tx2 = wallet::Wallet::spend_p2wsh(wallet_state, txid1);
+        auto tx2 = wallet.spend_p2wsh(txid1);
         if (tx2.empty()) {
             std::cerr << "Failed to create P2WSH transaction" << std::endl;
             return 1;
         }
-
 
         std::cout << "TX2:" << std::endl;
         std::cout << wallet::HexUtils::encode(tx2) << std::endl;        
@@ -121,7 +123,6 @@ int main() {
         } catch (const nlohmann::json::parse_error& e) {
             std::cerr << "Failed to parse mempool result: " << e.what() << std::endl;
         }
-
 
     } catch (const std::exception& e) {
         // Central error handling for all exceptions

@@ -590,7 +590,7 @@ std::vector<uint8_t> Wallet::create_op_return_script(const std::vector<uint8_t>&
 // - Assembles the final transaction
 //
 // Returns: A pair containing the transaction ID and the complete transaction
-std::pair<std::array<uint8_t, 32>, std::vector<uint8_t>> Wallet::spend_p2wpkh(const WalletState& wallet_state) {
+std::pair<std::array<uint8_t, 32>, std::vector<uint8_t>> Wallet::spend_p2wpkh() {
     // Choose UTXO
     auto utxo = wallet_state.choose_utxo(1000000).value();
     
@@ -665,10 +665,7 @@ std::pair<std::array<uint8_t, 32>, std::vector<uint8_t>> Wallet::spend_p2wpkh(co
 // - Assembles the final transaction
 //
 // Returns: The complete transaction
-std::vector<uint8_t> Wallet::spend_p2wsh(
-    const WalletState& wallet_state,
-    const std::array<uint8_t, 32>& txid) {
-    
+std::vector<uint8_t> Wallet::spend_p2wsh(const std::array<uint8_t, 32>& txid) {
     std::vector<uint8_t> message{'A', 'd', 'y', 's', ' ', '-', ' ',
                                 'I', ' ', 'k', 'n', 'o', 'w', ' ',
                                 'k', 'u', 'n', 'g', ' ', 'f', 'u', '!'};
