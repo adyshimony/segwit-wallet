@@ -99,28 +99,28 @@ Mempool acceptance result:
     {
         "allowed": true,
         "fees": {
-            "base": 1e-05,
-            "effective-feerate": 6.535e-05,
+            "base": "0.00001000",
+            "effective-feerate": "0.00006535",
             "effective-includes": [
-                "33b3a44481b018a6c5e71eb51e03f85563abdb3ff80950d48c712c7487245f06"
+                "4195a1fc84231cd4c0c098d5a83bccfbdcf1bdbcce2a6a7b9bf6e5b912de0dc8"
             ]
         },
         "txid": "d1cf63dd4f48441c5603f3fe157ee7b32dbdf63d699e75a1d346611c600ba9a9",
-        "vsize": 153,
-        "wtxid": "33b3a44481b018a6c5e71eb51e03f85563abdb3ff80950d48c712c7487245f06"
+        "vsize": "153.00000000",
+        "wtxid": "4195a1fc84231cd4c0c098d5a83bccfbdcf1bdbcce2a6a7b9bf6e5b912de0dc8"
     },
     {
         "allowed": true,
         "fees": {
-            "base": 1e-05,
-            "effective-feerate": 5.847e-05,
+            "base": "0.00001000",
+            "effective-feerate": "0.00005882",
             "effective-includes": [
-                "0c7698816e09b8f9bef41e17ce6f4da29583701a039f941d1eb28f776ec5a5a9"
+                "ba24a31f161de6d9696c1980abe7080af65c0a2d2f64fb8c7e60c60834278986"
             ]
         },
         "txid": "06f949da3dd721de560936ba431c1531ee1403e0955b840724f675a8085e373c",
-        "vsize": 171,
-        "wtxid": "0c7698816e09b8f9bef41e17ce6f4da29583701a039f941d1eb28f776ec5a5a9"
+        "vsize": "170.00000000",
+        "wtxid": "ba24a31f161de6d9696c1980abe7080af65c0a2d2f64fb8c7e60c60834278986"
     }
 ]
 ```
