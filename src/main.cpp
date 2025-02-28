@@ -1,25 +1,18 @@
-/**
- * @file main.cpp
- * @brief Bitcoin wallet balance checker for signet testnet
- * 
- * This program implements a Bitcoin wallet that:
- * 1. Recovers wallet state from an extended private key (xpriv)
- * 2. Maintains wallet state in a JSON file
- * 3. Displays current balance in BTC
- * 
- * Bitcoin Protocol Elements:
- * - Uses BIP32 Hierarchical Deterministic Wallets
- * - Implements BIP84 Native SegWit (bech32) addresses
- * - Works with Bitcoin's signet test network
- * - Uses derivation path m/84'/1'/0'/0 (Signet, Account 0, External Chain)
- * 
- * Key C++ Features Used:
- * - std::filesystem: Modern file system operations (C++17)
- * - RAII: Resource management through smart pointers and containers
- * - Exception handling: For error management
- * - Fixed-width integers: For precise Bitcoin protocol values
- * - std::fixed/setprecision: For proper Bitcoin amount formatting
- */
+// Bitcoin Wallet Application
+// 
+// This file serves as the main entry point for the Bitcoin wallet application.
+// The application is designed to interact with a Bitcoin Core node using the
+// bitcoin-cli interface, allowing users to perform various wallet operations.
+// 
+// Key Features:
+// - Initializes the wallet and loads its current state from the blockchain.
+// - Checks the wallet balance and displays it to the user.
+// - Creates new Bitcoin transactions, including SegWit transactions.
+// - Validates transactions against the Bitcoin network's mempool.
+// 
+// The application is intended for educational purposes, demonstrating how to
+// interact with the Bitcoin network programmatically and manage a wallet using
+// command-line tools.
 
 #include "bitcoin_cli.h"
 #include "segwit.h"
@@ -35,9 +28,9 @@
 // WALLET_NAME: Identifier for this wallet instance
 // EXTENDED_PRIVATE_KEY: BIP32 master key in Base58Check encoding (tprv prefix for testnet)
 // WALLET_STATE_FILE: Local file to persist wallet data between runs
-constexpr const char* WALLET_NAME = "wallet_314";
-constexpr const char* EXTENDED_PRIVATE_KEY = "tprv8ZgxMBicQKsPf8BJPyF6ryFmhgviot5aXsbfVh8o3Fa88iz3d7xZqnSKCeWJ25hAkq4S6Tu1RgRwBNdRqPTjgHX64WEqgbiB8xk1XjEmMX5";
-constexpr const char* WALLET_STATE_FILE = "wallet_state.json";
+constexpr auto WALLET_NAME = "wallet_314";
+constexpr auto EXTENDED_PRIVATE_KEY = "tprv8ZgxMBicQKsPf8BJPyF6ryFmhgviot5aXsbfVh8o3Fa88iz3d7xZqnSKCeWJ25hAkq4S6Tu1RgRwBNdRqPTjgHX64WEqgbiB8xk1XjEmMX5";
+constexpr auto WALLET_STATE_FILE = "wallet_state.json";
 
 int main() {
     try {

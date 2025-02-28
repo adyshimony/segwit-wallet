@@ -124,11 +124,7 @@ Mempool acceptance result:
     }
 ]
 ```
-### Dependencies
 
-- **OpenSSL**: For cryptographic operations (SHA256, RIPEMD160, ECDSA)
-- **nlohmann/json**: For wallet state serialization
-- **Bitcoin Core**: For RPC communication with the Bitcoin network
 
 This project serves as a practical learning tool for understanding Bitcoin's transaction model, cryptography, and scripting system.
 
