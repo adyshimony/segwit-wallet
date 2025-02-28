@@ -1,6 +1,6 @@
 # Segwit Wallet 
 
-A simple C++ application to calculate wallet balance and build transactions for learning purposes.
+A simple C++ application to calculate wallet balance and build transactions for learning purposes. This project does not use any Bitcoin libraries - instead, it implements all Bitcoin functionality from scratch (with the exception of elliptic curve mathematics).
 
 This project demonstrates a basic Bitcoin wallet implementation that works with a custom signet network. It focuses on:
 
